@@ -83,6 +83,8 @@ resource "kubernetes_deployment" "auth_deployment" {
       }
 
       spec {
+        service_account_name = kubernetes_service_account.presign_service_account.metadata[0].name
+
         affinity {
           pod_anti_affinity {
             required_during_scheduling_ignored_during_execution {
@@ -184,6 +186,8 @@ resource "kubernetes_deployment" "user_deployment" {
       }
 
       spec {
+        service_account_name = kubernetes_service_account.presign_service_account.metadata[0].name
+
         affinity {
           pod_anti_affinity {
             required_during_scheduling_ignored_during_execution {
@@ -285,6 +289,7 @@ resource "kubernetes_deployment" "match_deployment" {
       }
 
       spec {
+        service_account_name = kubernetes_service_account.presign_service_account.metadata[0].name
         affinity {
           pod_anti_affinity {
             required_during_scheduling_ignored_during_execution {
