@@ -14,7 +14,7 @@ resource "kubernetes_service" "auth_service" {
       target_port = 5678
     }
 
-    type = "ClusterIP"
+    type = "NodePort"
   }
 }
 
@@ -34,7 +34,7 @@ resource "kubernetes_service" "user_service" {
       target_port = 5678
     }
 
-    type = "ClusterIP"
+    type = "NodePort"
   }
 }
 
@@ -54,7 +54,7 @@ resource "kubernetes_service" "match_service" {
       target_port = 5678
     }
 
-    type = "ClusterIP"
+    type = "NodePort"
   }
 }
 
@@ -83,6 +83,20 @@ resource "kubernetes_deployment" "auth_deployment" {
       }
 
       spec {
+        affinity {
+          pod_anti_affinity {
+            required_during_scheduling_ignored_during_execution {
+              label_selector {
+                match_expressions {
+                  key      = "app"
+                  operator = "In"
+                  values   = ["auth"]
+                }
+              }
+              topology_key = "kubernetes.io/hostname"
+            }
+          }
+        }
         container {
           name  = "auth"
           image = "hashicorp/http-echo:0.2.3"
@@ -93,7 +107,53 @@ resource "kubernetes_deployment" "auth_deployment" {
           port {
             container_port = 5678
           }
+          env {
+            name = "DB_USERNAME"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_username"
+              }
+            }
+          }
+          env {
+            name = "DB_PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_password"
+              }
+            }
+          }
+          env {
+            name = "DB_ENDPOINT"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_endpoint"
+              }
+            }
+          }
+          env {
+            name = "DB_NAME"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_name"
+              }
+            }
+          }
+          env {
+            name = "DB_PORT"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_port"
+              }
+            }
+          }
         }
+
       }
     }
   }
@@ -124,6 +184,20 @@ resource "kubernetes_deployment" "user_deployment" {
       }
 
       spec {
+        affinity {
+          pod_anti_affinity {
+            required_during_scheduling_ignored_during_execution {
+              label_selector {
+                match_expressions {
+                  key      = "app"
+                  operator = "In"
+                  values   = ["user"]
+                }
+              }
+              topology_key = "kubernetes.io/hostname"
+            }
+          }
+        }
         container {
           name  = "user"
           image = "hashicorp/http-echo:0.2.3"
@@ -134,6 +208,52 @@ resource "kubernetes_deployment" "user_deployment" {
           port {
             container_port = 5678
           }
+          env {
+            name = "DB_USERNAME"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_username"
+              }
+            }
+          }
+          env {
+            name = "DB_PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_password"
+              }
+            }
+          }
+          env {
+            name = "DB_ENDPOINT"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_endpoint"
+              }
+            }
+          }
+          env {
+            name = "DB_NAME"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_name"
+              }
+            }
+          }
+          env {
+            name = "DB_PORT"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_port"
+              }
+            }
+          }
+
         }
       }
     }
@@ -165,6 +285,20 @@ resource "kubernetes_deployment" "match_deployment" {
       }
 
       spec {
+        affinity {
+          pod_anti_affinity {
+            required_during_scheduling_ignored_during_execution {
+              label_selector {
+                match_expressions {
+                  key      = "app"
+                  operator = "In"
+                  values   = ["match"]
+                }
+              }
+              topology_key = "kubernetes.io/hostname"
+            }
+          }
+        }
         container {
           name  = "match"
           image = "hashicorp/http-echo:0.2.3"
@@ -175,6 +309,52 @@ resource "kubernetes_deployment" "match_deployment" {
           port {
             container_port = 5678
           }
+          env {
+            name = "DB_USERNAME"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_username"
+              }
+            }
+          }
+          env {
+            name = "DB_PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_password"
+              }
+            }
+          }
+          env {
+            name = "DB_ENDPOINT"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_endpoint"
+              }
+            }
+          }
+          env {
+            name = "DB_NAME"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_name"
+              }
+            }
+          }
+          env {
+            name = "DB_PORT"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.rds_credentials.metadata[0].name
+                key  = "db_port"
+              }
+            }
+          }
+
         }
       }
     }

@@ -69,8 +69,8 @@ resource "kubernetes_ingress_v1" "frontend_ingress" {
       "alb.ingress.kubernetes.io/certificate-arn"         = aws_acm_certificate_validation.certificate_validation.certificate_arn
       "alb.ingress.kubernetes.io/ssl-redirect"            = "443"
       "alb.ingress.kubernetes.io/backend-protocol"        = "HTTP"
-      "alb.ingress.kubernetes.io/target-type"             = "ip"
-      "alb.ingress.kubernetes.io/target-group-attributes" = "deregistration_delay.timeout_seconds=30"
+      "alb.ingress.kubernetes.io/target-type"             = "instance"
+      "alb.ingress.kubernetes.io/target-group-attributes" = "deregistration_delay.timeout_seconds=30,stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=300"
       "alb.ingress.kubernetes.io/healthcheck-path"        = "/health"
       "alb.ingress.kubernetes.io/healthcheck-port"        = "traffic-port"
     }
@@ -82,7 +82,7 @@ resource "kubernetes_ingress_v1" "frontend_ingress" {
 
       http {
         path {
-          path      = "/auth"
+          path      = "/api/auth"
           path_type = "Prefix"
 
           backend {
@@ -96,7 +96,7 @@ resource "kubernetes_ingress_v1" "frontend_ingress" {
         }
 
         path {
-          path      = "/user"
+          path      = "/api/user"
           path_type = "Prefix"
 
           backend {
@@ -110,7 +110,7 @@ resource "kubernetes_ingress_v1" "frontend_ingress" {
         }
 
         path {
-          path      = "/match"
+          path      = "/api/match"
           path_type = "Prefix"
 
           backend {
