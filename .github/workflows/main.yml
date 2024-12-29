@@ -28,6 +28,6 @@ jobs:
           ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}
           ECR_REPOSITORY: yalecrush/auth
           IMAGE_TAG: latest
-        run:
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./auth_service
+        run: |
+          docker buildx build ./auth_service --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
