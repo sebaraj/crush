@@ -25,7 +25,7 @@ jobs:
       - name: Build, Tag, and Push Auth Image to ECR
         id: build-auth-image
         env:
-          ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}
+          ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com
           ECR_REPOSITORY: yalecrush/auth
           IMAGE_TAG: latest
         run: |
