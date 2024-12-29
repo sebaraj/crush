@@ -1,3 +1,15 @@
+data "aws_ecr_repository" "auth_serv_repo" {
+  name = "yalecrush/auth"
+}
+
+data "aws_ecr_repository" "match_serv_repo" {
+  name = "yalecrush/match"
+}
+
+data "aws_ecr_repository" "user_serv_repo" {
+  name = "yalecrush/user"
+}
+
 resource "kubernetes_service" "auth_service" {
   metadata {
     name      = "auth-service"
@@ -83,8 +95,6 @@ resource "kubernetes_deployment" "auth_deployment" {
       }
 
       spec {
-        service_account_name = kubernetes_service_account.presign_service_account.metadata[0].name
-
         affinity {
           pod_anti_affinity {
             required_during_scheduling_ignored_during_execution {
@@ -100,11 +110,9 @@ resource "kubernetes_deployment" "auth_deployment" {
           }
         }
         container {
-          name  = "auth"
-          image = "hashicorp/http-echo:0.2.3"
-          args = [
-            "-text=Hello from Auth Dummy Server!"
-          ]
+          name              = "auth"
+          image             = "${data.aws_ecr_repository.auth_serv_repo.repository_url}:latest"
+          image_pull_policy = "Always"
 
           port {
             container_port = 5678
@@ -289,7 +297,6 @@ resource "kubernetes_deployment" "match_deployment" {
       }
 
       spec {
-        service_account_name = kubernetes_service_account.presign_service_account.metadata[0].name
         affinity {
           pod_anti_affinity {
             required_during_scheduling_ignored_during_execution {

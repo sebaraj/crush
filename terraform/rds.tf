@@ -60,11 +60,11 @@ resource "kubernetes_secret" "rds_credentials" {
   }
 
   data = {
-    db_username = base64encode(var.db_username)
-    db_password = base64encode(var.db_password)
-    db_endpoint = base64encode(aws_db_instance.postgres_db.endpoint)
-    db_name     = base64encode("mydb")
-    db_port     = base64encode("5432")
+    db_username = var.db_username
+    db_password = var.db_password
+    db_endpoint = aws_db_instance.postgres_db.endpoint
+    db_name     = "mydb"
+    db_port     = "5432"
   }
 
   type = "Opaque"
