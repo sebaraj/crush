@@ -30,11 +30,11 @@ VALUES
 
 CREATE TABLE users (
     email VARCHAR(255) PRIMARY KEY,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    residential_college VARCHAR(225) NOT NULL REFERENCES res_colleges(name),
-    graduating_year INT NOT NULL,
-    gender INT NOT NULL, -- see above
+    is_active BOOLEAN NOT NULL DEFAULT FALSE,
+    name VARCHAR(255) NOT NULL,
+    residential_college VARCHAR(225) REFERENCES res_colleges(name),
+    graduating_year INT,
+    gender INT, -- see above
     partner_genders INT, -- see above
     instagram VARCHAR(255),
     snapchat VARCHAR(255),
@@ -67,6 +67,13 @@ CREATE TABLE answers (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE elos (
+    email VARCHAR(255) PRIMARY KEY REFERENCES users(email),
+    elo INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE matches (
     user1_email VARCHAR(255) REFERENCES users(email),
     user2_email VARCHAR(255) REFERENCES users(email),
@@ -92,6 +99,19 @@ AFTER INSERT ON users
 FOR EACH ROW
 EXECUTE FUNCTION create_answers_row();
 
+CREATE OR REPLACE FUNCTION create_elos_row()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO elos (email) VALUES (NEW.email);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER create_elos_row
+AFTER INSERT ON users
+FOR EACH ROW
+EXECUTE FUNCTION create_elos_row();
+
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -107,6 +127,11 @@ EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER set_updated_at
 BEFORE UPDATE ON answers
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER set_updated_at
+BEFORE UPDATE ON elos
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
