@@ -1,3 +1,24 @@
+variable "oauth_client" {
+  description = "OAuth client id for the application"
+  type        = string
+  sensitive   = true
+}
+
+
+resource "kubernetes_secret" "oauth_credentials" {
+  metadata {
+    name      = "oauth-credentials"
+    namespace = "default"
+  }
+
+  data = {
+    oauth_client = var.oauth_client
+  }
+
+  type = "Opaque"
+}
+
+
 data "aws_ecr_repository" "auth_serv_repo" {
   name = "yalecrush/auth"
 }
@@ -118,6 +139,16 @@ resource "kubernetes_deployment" "auth_deployment" {
             container_port = 5678
           }
           env {
+            name = "OAUTH_CLIENT"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.oauth_credentials.metadata[0].name
+                key  = "oauth_client"
+              }
+            }
+          }
+
+          env {
             name = "DB_USERNAME"
             value_from {
               secret_key_ref {
@@ -221,6 +252,15 @@ resource "kubernetes_deployment" "user_deployment" {
             container_port = 5678
           }
           env {
+            name = "OAUTH_CLIENT"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.oauth_credentials.metadata[0].name
+                key  = "oauth_client"
+              }
+            }
+          }
+          env {
             name = "DB_USERNAME"
             value_from {
               secret_key_ref {
@@ -320,6 +360,15 @@ resource "kubernetes_deployment" "match_deployment" {
 
           port {
             container_port = 5678
+          }
+          env {
+            name = "OAUTH_CLIENT"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.oauth_credentials.metadata[0].name
+                key  = "oauth_client"
+              }
+            }
           }
           env {
             name = "DB_USERNAME"

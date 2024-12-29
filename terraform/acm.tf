@@ -1,5 +1,5 @@
 resource "aws_acm_certificate" "certificate" {
-  domain_name       = "yalecrush.com"
+  domain_name       = "api.yalecrush.com"
   validation_method = "DNS"
 
   tags = {

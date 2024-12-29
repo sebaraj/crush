@@ -78,7 +78,7 @@ resource "kubernetes_ingress_v1" "frontend_ingress" {
 
   spec {
     rule {
-      host = "yalecrush.com"
+      host = "api.yalecrush.com"
 
       http {
         path {
