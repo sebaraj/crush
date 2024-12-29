@@ -1,0 +1,33 @@
+---
+name: Build and Push Auth Service Docker Image to AWS ECR
+on:
+  push:
+    branches: [main, auth]
+jobs:
+  build-and-push:
+    name: Build and Push Auth Service to AWS ECR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Login to AWS ECR
+        id: login-ecr
+        users: aws-actions/aws-ecr-login@v1
+
+      - name: Build, Tag, and Push Auth Image to ECR
+        id: build-auth-image
+        env:
+          ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}
+          ECR_REPOSITORY: yalecrush/auth
+          IMAGE_TAG: latest
+        run:
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./auth_service
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

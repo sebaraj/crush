@@ -7,7 +7,6 @@ import (
 	"net"
 	"os"
 	"strings"
-	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -20,8 +19,6 @@ func getEnv(key, defaultVal string) string {
 }
 
 func connectToDB() *sql.DB {
-	fmt.Println("Connecting to DB")
-	time.Sleep(5 * time.Second)
 	dbUser := getEnv("DB_USERNAME", "localtest")
 	dbPassword := getEnv("DB_PASSWORD", "localtest")
 	dbEndpoint := getEnv("DB_ENDPOINT", "localhost")
