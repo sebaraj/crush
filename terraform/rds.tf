@@ -16,6 +16,14 @@ resource "aws_security_group" "rds_sg" {
     description     = "Allow Postgres access from EKS worker nodes"
   }
 
+  ingress {
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.dms_sg.id]
+    description     = "Allow Postgres access from DMS"
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
