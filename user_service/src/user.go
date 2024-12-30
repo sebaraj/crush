@@ -26,6 +26,8 @@ type user struct {
 	Answers            []int    `json:"answers"`
 }
 
+const numInterests = 5
+
 func (s *Server) handleUser(w http.ResponseWriter, r *http.Request) {
 	printRequestDetails(r)
 	email := r.URL.Path[len("/v1/user/info/"):]
@@ -77,8 +79,8 @@ func (s *Server) handleGetUser(w http.ResponseWriter, r *http.Request, email str
 	var snapchat sql.NullString
 	var phoneNumber sql.NullString
 	var pictureS3URL sql.NullString
-	var interests [5]sql.NullString
-	var answers [12]sql.NullInt64
+	var interests [numInterests]sql.NullString
+	var answers [numQuestions]sql.NullInt64
 
 	query := `
 		SELECT 

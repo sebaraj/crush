@@ -250,6 +250,14 @@ resource "kubernetes_deployment" "user_deployment" {
             container_port = 6000
           }
           env {
+            name  = "S3_REGION"
+            value = "us-east-2"
+          }
+          env {
+            name  = "S3_BUCKET"
+            value = aws_s3_bucket.images_bucket.bucket
+          }
+          env {
             name = "OAUTH_CLIENT"
             value_from {
               secret_key_ref {
