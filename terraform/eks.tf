@@ -5,6 +5,9 @@ module "eks" {
   vpc_id                         = module.vpc.vpc_id
   subnet_ids                     = concat(module.vpc.public_subnets, module.vpc.private_subnets)
   cluster_endpoint_public_access = true
+  cluster_upgrade_policy = {
+    support_type = "STANDARD"
+  }
 
   eks_managed_node_groups = {
     nodes = {

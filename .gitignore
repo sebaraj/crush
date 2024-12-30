@@ -3,3 +3,5 @@ terraform/.terraform.lock.hcl
 terraform/terraform*
 terraform/.terraform.tfstate.lock.info
 terraform/db.tfvars
+database/*
+
