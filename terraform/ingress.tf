@@ -82,7 +82,7 @@ resource "kubernetes_ingress_v1" "frontend_ingress" {
 
       http {
         path {
-          path      = "/auth"
+          path      = "/v1/auth"
           path_type = "Prefix"
 
           backend {

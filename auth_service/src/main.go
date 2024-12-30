@@ -15,7 +15,7 @@ func main() {
 	db := connectToDB()
 	app := NewServer(db)
 	router := http.NewServeMux()
-	router.HandleFunc("/auth", app.corsMiddleware(app.handleAuth))
+	router.HandleFunc("/v1/auth", app.corsMiddleware(app.handleAuth))
 
 	server := &http.Server{
 		Addr:    ":5678",

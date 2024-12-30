@@ -27,7 +27,7 @@ func main() {
 	signal.Notify(stop, os.Interrupt)
 
 	go func() {
-		log.Println("Starting server on :5678")
+		log.Println("Starting server on :6000")
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Server failed: %v", err)
 		}

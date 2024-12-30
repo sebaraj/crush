@@ -8,6 +8,7 @@ import (
 )
 
 func (s *Server) handleSearch(w http.ResponseWriter, r *http.Request) {
+	printRequestDetails(r)
 	_, err := s.validateOAuthToken(r)
 	if err != nil {
 		http.Error(w, "Invalid token", http.StatusUnauthorized)

@@ -8,6 +8,7 @@ import (
 )
 
 func (s *Server) handlePicture(w http.ResponseWriter, r *http.Request) {
+	printRequestDetails(r)
 	email := r.URL.Path[len("/v1/user/picture/"):]
 	log.Printf("Search: %s", email)
 

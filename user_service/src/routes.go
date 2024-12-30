@@ -16,7 +16,7 @@ func NewServer(db *sql.DB) *Server {
 }
 
 func (s *Server) initializeRoutes(router *http.ServeMux) {
-	router.HandleFunc("/v1/user/info/", s.handleUser)
-	router.HandleFunc("/v1/user/search/", s.handleSearch)
-	router.HandleFunc("/v1/user/picture/", s.handlePicture)
+	router.HandleFunc("/v1/user/info/", s.corsMiddleware(s.handleUser))
+	router.HandleFunc("/v1/user/search/", s.corsMiddleware(s.handleSearch))
+	router.HandleFunc("/v1/user/picture/", s.corsMiddleware(s.handlePicture))
 }
