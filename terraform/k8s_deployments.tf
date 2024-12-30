@@ -64,7 +64,7 @@ resource "kubernetes_service" "user_service" {
 
     port {
       port        = 80
-      target_port = 5678
+      target_port = 6000
     }
 
     type = "NodePort"
@@ -249,7 +249,7 @@ resource "kubernetes_deployment" "user_deployment" {
           ]
 
           port {
-            container_port = 5678
+            container_port = 6000
           }
           env {
             name = "OAUTH_CLIENT"

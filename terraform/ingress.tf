@@ -96,7 +96,7 @@ resource "kubernetes_ingress_v1" "frontend_ingress" {
         }
 
         path {
-          path      = "/user"
+          path      = "/v1/user"
           path_type = "Prefix"
 
           backend {
@@ -110,7 +110,7 @@ resource "kubernetes_ingress_v1" "frontend_ingress" {
         }
 
         path {
-          path      = "/match"
+          path      = "/v1/match"
           path_type = "Prefix"
 
           backend {
