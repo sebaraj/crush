@@ -1,3 +1,28 @@
+resource "aws_db_parameter_group" "postgres_params" {
+  name        = "rds-postgres-params"
+  family      = "postgres15"
+  description = "Parameter group for logical replication"
+
+  parameter {
+    apply_method = "pending-reboot"
+    name         = "max_wal_senders"
+    value        = "10"
+  }
+
+  parameter {
+    apply_method = "pending-reboot"
+    name         = "max_replication_slots"
+    value        = "10"
+  }
+
+  parameter {
+    apply_method = "pending-reboot"
+    name         = "rds.logical_replication"
+    value        = "1"
+  }
+}
+
+
 resource "aws_db_subnet_group" "rds_subnet_group" {
   name        = "rds-postgres-subnet-group"
   description = "Subnet group for RDS Postgres"
@@ -14,6 +39,14 @@ resource "aws_security_group" "rds_sg" {
     protocol        = "tcp"
     security_groups = [module.eks.node_security_group_id]
     description     = "Allow Postgres access from EKS worker nodes"
+  }
+
+  ingress {
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.dms_sg.id]
+    description     = "Allow Postgres access from DMS"
   }
 
   egress {
@@ -40,7 +73,7 @@ resource "aws_db_instance" "postgres_db" {
   identifier             = "my-postgres-db"
   db_name                = "mydb"
   engine                 = "postgres"
-  engine_version         = "16.1"
+  engine_version         = "15"
   instance_class         = "db.t3.micro"
   allocated_storage      = 20
   storage_encrypted      = true
@@ -49,6 +82,7 @@ resource "aws_db_instance" "postgres_db" {
   db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   publicly_accessible    = false
+  parameter_group_name   = aws_db_parameter_group.postgres_params.name
 
   backup_window = "03:00-04:00"
 }

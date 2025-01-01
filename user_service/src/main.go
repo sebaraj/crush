@@ -8,17 +8,34 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	_ "github.com/lib/pq"
 )
 
 func main() {
 	db := connectToDB()
-	app := NewServer(db)
+
+	// connect to s3
+	s3Region := getEnv("S3_REGION", "")
+	s3Bucket := getEnv("S3_BUCKET", "")
+
+	if s3Region == "" || s3Bucket == "" {
+		log.Fatal("One or more required environment variables for S3 are missing")
+		return
+	}
+
+	sess := session.Must(session.NewSession(&aws.Config{
+		Region: aws.String(s3Region),
+	}))
+
+	app := NewServer(db, s3Bucket, s3Region, s3.New(sess))
 	router := http.NewServeMux()
-	router.HandleFunc("/v1/auth", app.corsMiddleware(app.handleAuth))
+	app.initializeRoutes(router)
 
 	server := &http.Server{
-		Addr:    ":5678",
+		Addr:    ":6000",
 		Handler: router,
 	}
 
@@ -27,7 +44,7 @@ func main() {
 	signal.Notify(stop, os.Interrupt)
 
 	go func() {
-		log.Println("Starting server on :5678")
+		log.Println("Starting server on :6000")
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Server failed: %v", err)
 		}

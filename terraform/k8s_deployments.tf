@@ -64,7 +64,7 @@ resource "kubernetes_service" "user_service" {
 
     port {
       port        = 80
-      target_port = 5678
+      target_port = 6000
     }
 
     type = "NodePort"
@@ -242,14 +242,20 @@ resource "kubernetes_deployment" "user_deployment" {
           }
         }
         container {
-          name  = "user"
-          image = "hashicorp/http-echo:0.2.3"
-          args = [
-            "-text=Hello from User Dummy Server!"
-          ]
+          name              = "user"
+          image             = "${data.aws_ecr_repository.user_serv_repo.repository_url}:latest"
+          image_pull_policy = "Always"
 
           port {
-            container_port = 5678
+            container_port = 6000
+          }
+          env {
+            name  = "S3_REGION"
+            value = "us-east-2"
+          }
+          env {
+            name  = "S3_BUCKET"
+            value = aws_s3_bucket.images_bucket.bucket
           }
           env {
             name = "OAUTH_CLIENT"

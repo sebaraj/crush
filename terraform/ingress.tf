@@ -82,7 +82,7 @@ resource "kubernetes_ingress_v1" "frontend_ingress" {
 
       http {
         path {
-          path      = "/api/auth"
+          path      = "/v1/auth"
           path_type = "Prefix"
 
           backend {
@@ -96,7 +96,7 @@ resource "kubernetes_ingress_v1" "frontend_ingress" {
         }
 
         path {
-          path      = "/api/user"
+          path      = "/v1/user"
           path_type = "Prefix"
 
           backend {
@@ -110,7 +110,7 @@ resource "kubernetes_ingress_v1" "frontend_ingress" {
         }
 
         path {
-          path      = "/api/match"
+          path      = "/v1/match"
           path_type = "Prefix"
 
           backend {

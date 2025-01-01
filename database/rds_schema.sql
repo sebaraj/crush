@@ -28,6 +28,15 @@ VALUES
    [cis-female, trans-female, cis-male, trans-male, non-binary] = cis-male
 */
 
+CREATE TABLE test (
+    name VARCHAR(20) PRIMARY KEY
+);
+
+INSERT INTO test
+    (name)
+VALUES
+    ('firstname');
+
 CREATE TABLE users (
     email VARCHAR(255) PRIMARY KEY,
     is_active BOOLEAN NOT NULL DEFAULT FALSE,
