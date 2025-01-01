@@ -34,6 +34,16 @@ resource "aws_opensearch_domain" "opensearch" {
   }
 }
 
+# resource "aws_security_group_rule" "opensearch_to_dms" {
+#   type                     = "ingress"
+#   from_port                = 443
+#   to_port                  = 443
+#   protocol                 = "tcp"
+#   security_group_id        = aws_security_group.opensearch_sg.id
+#   source_security_group_id = aws_security_group.dms_sg.id
+#   description              = "Allow OpenSearch to respond to DMS"
+# }
+
 
 resource "aws_security_group" "opensearch_sg" {
   name   = "opensearch-sg"
@@ -72,7 +82,7 @@ resource "aws_opensearch_domain_policy" "main" {
       {
         Effect    = "Allow",
         Principal = "*",
-        Action    = ["es:ESHttpGet", "es:ESHttpPut"],
+        Action    = ["es:ESHttpGet", "es:ESHttpPut", "es:ESHttpPost", "es:ESHttpDelete"],
         Resource  = "${aws_opensearch_domain.opensearch.arn}/*"
       },
       {
@@ -81,10 +91,11 @@ resource "aws_opensearch_domain_policy" "main" {
           AWS = [aws_iam_role.dms_access_role.arn]
         }
         Action = [
-          "es:ESHttpGet",
-          "es:ESHttpPut",
-          "es:ESHttpPost",
-          "es:ESHttpDelete"
+          "opensearch:ESHttpGet",
+          "opensearch:ESHttpPut",
+          "opensearch:ESHttpPost",
+          "opensearch:ESHttpDelete",
+          "opensearch:ESHttpHead"
         ]
         Resource = "${aws_opensearch_domain.opensearch.arn}/*"
       }
