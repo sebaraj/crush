@@ -19,7 +19,7 @@ import (
 )
 
 func main() {
-	db := connectToDB()
+	db := server.connectToDB()
 
 	// connect to s3
 	s3Region := getEnv("S3_REGION", "")
