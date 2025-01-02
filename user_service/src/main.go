@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"log"
 	"net/http"
 	"os"
@@ -12,6 +13,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	_ "github.com/lib/pq"
+
+	"github.com/opensearch-project/opensearch-go"
 )
 
 func main() {
@@ -26,11 +29,22 @@ func main() {
 		return
 	}
 
+	// connect to opensearch
+	opensearchEndpoint := getEnv("OPENSEARCH_ENDPOINT", "")
+	osClient, err := opensearch.NewClient(opensearch.Config{
+		Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
+		Addresses: []string{opensearchEndpoint},
+	})
+	if err != nil {
+		log.Printf("OpenSearch endpoint%s", opensearchEndpoint)
+		log.Fatalf("Error creating the OpenSearch client: %s", err)
+	}
+
 	sess := session.Must(session.NewSession(&aws.Config{
 		Region: aws.String(s3Region),
 	}))
 
-	app := NewServer(db, s3Bucket, s3Region, s3.New(sess))
+	app := NewServer(db, s3Bucket, s3Region, s3.New(sess), osClient)
 	router := http.NewServeMux()
 	app.initializeRoutes(router)
 
