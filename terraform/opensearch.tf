@@ -103,3 +103,13 @@ resource "aws_opensearch_domain_policy" "main" {
   })
 }
 
+resource "kubernetes_secret" "opensearch_credentials" {
+  metadata {
+    name      = "opensearch-credentials"
+    namespace = "default"
+  }
+  data = {
+    opensearch_endpoint = aws_opensearch_domain.opensearch.endpoint
+  }
+  type = "Opaque"
+}

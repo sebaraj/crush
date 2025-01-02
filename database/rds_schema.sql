@@ -38,28 +38,28 @@ VALUES
     ('firstname');
 
 CREATE TABLE users (
-    email VARCHAR(255) PRIMARY KEY,
+    email VARCHAR(50) PRIMARY KEY,
     is_active BOOLEAN NOT NULL DEFAULT FALSE,
-    name VARCHAR(255) NOT NULL,
-    residential_college VARCHAR(225) REFERENCES res_colleges(name),
+    name VARCHAR(50) NOT NULL,
+    residential_college VARCHAR(30) REFERENCES res_colleges(name),
     graduating_year INT,
     gender INT, -- see above
     partner_genders INT, -- see above
-    instagram VARCHAR(255),
-    snapchat VARCHAR(255),
-    phone_number VARCHAR(255),
+    instagram VARCHAR(30),
+    snapchat VARCHAR(30),
+    phone_number VARCHAR(15),
     picture_s3_url VARCHAR(2000),
-    interest_1 VARCHAR(255),
-    interest_2 VARCHAR(255),
-    interest_3 VARCHAR(255),
-    interest_4 VARCHAR(255),
-    interest_5 VARCHAR(255),
+    interest_1 VARCHAR(20),
+    interest_2 VARCHAR(20),
+    interest_3 VARCHAR(20),
+    interest_4 VARCHAR(20),
+    interest_5 VARCHAR(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE answers (
-    email VARCHAR(255) PRIMARY KEY REFERENCES users(email),
+    email VARCHAR(50) PRIMARY KEY REFERENCES users(email),
     question1 INT,
     question2 INT,
     question3 INT,
@@ -77,15 +77,15 @@ CREATE TABLE answers (
 );
 
 CREATE TABLE elos (
-    email VARCHAR(255) PRIMARY KEY REFERENCES users(email),
+    email VARCHAR(50) PRIMARY KEY REFERENCES users(email),
     elo INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE matches (
-    user1_email VARCHAR(255) REFERENCES users(email),
-    user2_email VARCHAR(255) REFERENCES users(email),
+    user1_email VARCHAR(50) REFERENCES users(email),
+    user2_email VARCHAR(50) REFERENCES users(email),
     user1_interested BOOLEAN NOT NULL DEFAULT FALSE,
     user2_interested BOOLEAN NOT NULL DEFAULT FALSE,
     server_generated BOOLEAN NOT NULL DEFAULT FALSE,

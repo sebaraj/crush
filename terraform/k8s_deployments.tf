@@ -258,6 +258,15 @@ resource "kubernetes_deployment" "user_deployment" {
             value = aws_s3_bucket.images_bucket.bucket
           }
           env {
+            name = "OPENSEARCH_ENDPOINT"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.opensearch_credentials.metadata[0].name
+                key  = "opensearch_endpoint"
+              }
+            }
+          }
+          env {
             name = "OAUTH_CLIENT"
             value_from {
               secret_key_ref {
@@ -366,6 +375,15 @@ resource "kubernetes_deployment" "match_deployment" {
 
           port {
             container_port = 5678
+          }
+          env {
+            name = "OPENSEARCH_ENDPOINT"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.opensearch_credentials.metadata[0].name
+                key  = "opensearch_endpoint"
+              }
+            }
           }
           env {
             name = "OAUTH_CLIENT"
