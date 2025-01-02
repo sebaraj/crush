@@ -103,7 +103,7 @@ resource "aws_opensearch_domain_policy" "main" {
   })
 }
 
-resource "kubernete_secret" "opensearch_credentials" {
+resource "kubernetes_secret" "opensearch_credentials" {
   metadata {
     name      = "opensearch-credentials"
     namespace = "default"

@@ -15,6 +15,7 @@ import (
 	_ "github.com/lib/pq"
 
 	"github.com/opensearch-project/opensearch-go"
+	"github.com/sebaraj/crush/user-service/src/server"
 )
 
 func main() {
@@ -35,10 +36,12 @@ func main() {
 		Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
 		Addresses: []string{opensearchEndpoint},
 	})
+	log.Printf("OpenSearch endpoint%s", opensearchEndpoint)
+
 	if err != nil {
-		log.Printf("OpenSearch endpoint%s", opensearchEndpoint)
 		log.Fatalf("Error creating the OpenSearch client: %s", err)
 	}
+	log.Printf("OpenSearch client created")
 
 	sess := session.Must(session.NewSession(&aws.Config{
 		Region: aws.String(s3Region),
