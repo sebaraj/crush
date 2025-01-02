@@ -19,11 +19,11 @@ import (
 )
 
 func main() {
-	db := server.connectToDB()
+	db := server.ConnectToDB()
 
 	// connect to s3
-	s3Region := server.getEnv("S3_REGION", "")
-	s3Bucket := server.getEnv("S3_BUCKET", "")
+	s3Region := server.GetEnv("S3_REGION", "")
+	s3Bucket := server.GetEnv("S3_BUCKET", "")
 
 	if s3Region == "" || s3Bucket == "" {
 		log.Fatal("One or more required environment variables for S3 are missing")
@@ -31,7 +31,7 @@ func main() {
 	}
 
 	// connect to opensearch
-	opensearchEndpoint := server.getEnv("OPENSEARCH_ENDPOINT", "")
+	opensearchEndpoint := server.GetEnv("OPENSEARCH_ENDPOINT", "")
 	osClient, err := opensearch.NewClient(opensearch.Config{
 		Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
 		Addresses: []string{opensearchEndpoint},
@@ -49,7 +49,7 @@ func main() {
 
 	app := server.NewServer(db, s3Bucket, s3Region, s3.New(sess), osClient)
 	router := http.NewServeMux()
-	app.initializeRoutes(router)
+	app.InitializeRoutes(router)
 
 	server := &http.Server{
 		Addr:    ":6000",

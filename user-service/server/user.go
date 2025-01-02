@@ -10,7 +10,7 @@ import (
 	// "github.com/lib/pq"
 )
 
-type user struct {
+type User struct {
 	Email              string   `json:"email"`
 	IsActive           bool     `json:"is_active"`
 	Name               string   `json:"name"`
@@ -26,9 +26,12 @@ type user struct {
 	Answers            []int    `json:"answers"`
 }
 
-const numInterests = 5
+const (
+	NumInterests = 5
+	NumQuestions = 12
+)
 
-func (s *Server) handleUser(w http.ResponseWriter, r *http.Request) {
+func (s *Server) HandleUser(w http.ResponseWriter, r *http.Request) {
 	printRequestDetails(r)
 	email := r.URL.Path[len("/v1/user/info/"):]
 	if email == "" {
@@ -69,7 +72,7 @@ func (s *Server) handleGetUser(w http.ResponseWriter, r *http.Request, email str
 		}
 	}()
 
-	var result user
+	var result User
 	var name sql.NullString
 	var residentialCollege sql.NullString
 	var graduatingYear sql.NullInt64
@@ -79,8 +82,8 @@ func (s *Server) handleGetUser(w http.ResponseWriter, r *http.Request, email str
 	var snapchat sql.NullString
 	var phoneNumber sql.NullString
 	var pictureS3URL sql.NullString
-	var interests [numInterests]sql.NullString
-	var answers [numQuestions]sql.NullInt64
+	var interests [NumInterests]sql.NullString
+	var answers [NumQuestions]sql.NullInt64
 
 	query := `
 		SELECT 

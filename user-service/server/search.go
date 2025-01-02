@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func (s *Server) handleSearch(w http.ResponseWriter, r *http.Request) {
+func (s *Server) HandleSearch(w http.ResponseWriter, r *http.Request) {
 	printRequestDetails(r)
 	_, err := s.validateOAuthToken(r)
 	if err != nil {

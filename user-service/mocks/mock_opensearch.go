@@ -1,7 +1,7 @@
 package mocks
 
 import (
-	"github.com/opensearch-project/opensearch-go"
+	"github.com/opensearch-project/opensearch-go/opensearchapi"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -9,7 +9,7 @@ type MockOpenSearchClient struct {
 	mock.Mock
 }
 
-func (m *MockOpenSearchClient) Search(options ...func(*opensearch.SearchRequest)) (*opensearch.Response, error) {
-	args := m.Called(options)
-	return args.Get(0).(*opensearch.Response), args.Error(1)
+func (m *MockOpenSearchClient) Search(req *opensearchapi.SearchRequest) (*opensearchapi.Response, error) {
+	args := m.Called(req)
+	return args.Get(0).(*opensearchapi.Response), args.Error(1)
 }

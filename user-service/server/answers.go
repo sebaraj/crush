@@ -11,13 +11,11 @@ import (
 	// "github.com/lib/pq"
 )
 
-const numQuestions = 12
+// type answers struct {
+// Answers []int `json:"answers"`
+// }
 
-type answers struct {
-	Answers []int `json:"answers"`
-}
-
-func (s *Server) handleAnswers(w http.ResponseWriter, r *http.Request) {
+func (s *Server) HandleAnswers(w http.ResponseWriter, r *http.Request) {
 	printRequestDetails(r)
 	email := r.URL.Path[len("/v1/user/answers/"):]
 	if email == "" {

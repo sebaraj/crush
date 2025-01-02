@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 )
 
-func (s *Server) handlePicture(w http.ResponseWriter, r *http.Request) {
+func (s *Server) HandlePicture(w http.ResponseWriter, r *http.Request) {
 	printRequestDetails(r)
 	userEmail := r.URL.Path[len("/v1/user/picture/"):]
 	log.Printf("Search: %s", userEmail)

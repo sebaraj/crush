@@ -28,9 +28,9 @@ func NewServer(db *sql.DB, bucket string, s3Region string, s3Client *s3.S3, open
 	}
 }
 
-func (s *Server) initializeRoutes(router *http.ServeMux) {
-	router.HandleFunc("/v1/user/info/", s.corsMiddleware(s.handleUser))
-	router.HandleFunc("/v1/user/answers/", s.corsMiddleware(s.handleAnswers))
-	router.HandleFunc("/v1/user/search/", s.corsMiddleware(s.handleSearch))
-	router.HandleFunc("/v1/user/picture/", s.corsMiddleware(s.handlePicture))
+func (s *Server) InitializeRoutes(router *http.ServeMux) {
+	router.HandleFunc("/v1/user/info/", s.corsMiddleware(s.HandleUser))
+	router.HandleFunc("/v1/user/answers/", s.corsMiddleware(s.HandleAnswers))
+	router.HandleFunc("/v1/user/search/", s.corsMiddleware(s.HandleSearch))
+	router.HandleFunc("/v1/user/picture/", s.corsMiddleware(s.HandlePicture))
 }
