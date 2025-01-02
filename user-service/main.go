@@ -15,15 +15,15 @@ import (
 	_ "github.com/lib/pq"
 
 	"github.com/opensearch-project/opensearch-go"
-	"github.com/sebaraj/crush/user-service/src/server"
+	"github.com/sebaraj/crush/user-service/server"
 )
 
 func main() {
 	db := server.connectToDB()
 
 	// connect to s3
-	s3Region := getEnv("S3_REGION", "")
-	s3Bucket := getEnv("S3_BUCKET", "")
+	s3Region := server.getEnv("S3_REGION", "")
+	s3Bucket := server.getEnv("S3_BUCKET", "")
 
 	if s3Region == "" || s3Bucket == "" {
 		log.Fatal("One or more required environment variables for S3 are missing")
@@ -31,7 +31,7 @@ func main() {
 	}
 
 	// connect to opensearch
-	opensearchEndpoint := getEnv("OPENSEARCH_ENDPOINT", "")
+	opensearchEndpoint := server.getEnv("OPENSEARCH_ENDPOINT", "")
 	osClient, err := opensearch.NewClient(opensearch.Config{
 		Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
 		Addresses: []string{opensearchEndpoint},
@@ -47,7 +47,7 @@ func main() {
 		Region: aws.String(s3Region),
 	}))
 
-	app := NewServer(db, s3Bucket, s3Region, s3.New(sess), osClient)
+	app := server.NewServer(db, s3Bucket, s3Region, s3.New(sess), osClient)
 	router := http.NewServeMux()
 	app.initializeRoutes(router)
 

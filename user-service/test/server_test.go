@@ -16,8 +16,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	"github.com/sebaraj/crush/user-service/src/server"
-	"github.com/sebaraj/crush/user-service/test/mocks"
+	"github.com/sebaraj/crush/user-service/mocks"
+	"github.com/sebaraj/crush/user-service/server"
 )
 
 type testServer struct {
