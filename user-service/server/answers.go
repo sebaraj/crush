@@ -14,13 +14,10 @@ package server
 
 import (
 	"encoding/json"
-	// "io"
-	// "database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"strconv"
-	// "github.com/lib/pq"
 )
 
 func (s *Server) HandleAnswers(w http.ResponseWriter, r *http.Request) {

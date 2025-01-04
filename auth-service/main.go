@@ -1,3 +1,16 @@
+/***************************************************************************
+ * File Name: auth-service/main.go
+ * Author: Bryan SebaRaj
+ * Description: Entrypoint for auth service pod; initializes server and its dependencies/
+ * connection to PostgreSQL (DMS).
+ * Date Created: 01-01-2025
+ *
+ * Copyright (c) 2025 Bryan SebaRaj. All rights reserved.
+ *
+ * License:
+ * This file is part of Crush. See the LICENSE file for details.
+ ***************************************************************************/
+
 package main
 
 import (
@@ -9,13 +22,17 @@ import (
 	"time"
 
 	_ "github.com/lib/pq"
+	"github.com/sebaraj/crush/auth-service/server"
 )
 
 func main() {
-	db := connectToDB()
-	app := NewServer(db)
+	// connect to postgresql (RDS)
+	db := server.ConnectToDB()
+
+	// initialize server
+	app := server.NewServer(db)
 	router := http.NewServeMux()
-	router.HandleFunc("/v1/auth", app.corsMiddleware(app.handleAuth))
+	router.HandleFunc("/v1/auth", app.CorsMiddleware(app.HandleAuth))
 
 	server := &http.Server{
 		Addr:    ":5678",

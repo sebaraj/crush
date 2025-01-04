@@ -12,6 +12,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Run Unit Tests for Auth Service
+        run: |
+          cd ./auth-service
+          go test ./test/... -v
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

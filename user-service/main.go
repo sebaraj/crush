@@ -32,6 +32,7 @@ import (
 )
 
 func main() {
+	// connect to postgresql (RDS)
 	db := server.ConnectToDB()
 
 	// connect to s3
@@ -56,10 +57,12 @@ func main() {
 	}
 	log.Printf("OpenSearch client created")
 
+	// connect to s3
 	sess := session.Must(session.NewSession(&aws.Config{
 		Region: aws.String(s3Region),
 	}))
 
+	// initialize server
 	app := server.NewServer(db, s3Bucket, s3Region, s3.New(sess), osClient)
 	router := http.NewServeMux()
 	app.InitializeRoutes(router)
