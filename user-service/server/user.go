@@ -104,7 +104,7 @@ func (s *Server) handleGetUser(w http.ResponseWriter, r *http.Request, email str
 			u.is_active, 
 			u.name, 
 			u.residential_college, 
-            u.notif_pref,
+      u.notif_pref,
 			u.graduating_year, 
 			u.gender, 
 			u.partner_genders, 

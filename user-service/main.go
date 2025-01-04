@@ -1,3 +1,4 @@
+
 /***************************************************************************
  * File Name: user-service/main.go
  * Author: Bryan SebaRaj
@@ -38,6 +39,7 @@ func main() {
 	// connect to s3
 	s3Region := server.GetEnv("S3_REGION", "")
 	s3Bucket := server.GetEnv("S3_BUCKET", "")
+
 
 	if s3Region == "" || s3Bucket == "" {
 		log.Fatal("One or more required environment variables for S3 are missing")
