@@ -368,6 +368,18 @@ resource "aws_dms_replication_task" "cdc_task" {
           "table-name"  = "users"
           "column-name" = "phone_number"
         }
+      },
+      {
+        "rule-type"   = "transformation"
+        "rule-id"     = "11"
+        "rule-name"   = "exclude-notif"
+        "rule-action" = "remove-column"
+        "rule-target" = "column"
+        "object-locator" = {
+          "schema-name" = "public"
+          "table-name"  = "users"
+          "column-name" = "notif_pref"
+        }
       }
     ]
   })

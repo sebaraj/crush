@@ -42,6 +42,7 @@ CREATE TABLE users (
     is_active BOOLEAN NOT NULL DEFAULT FALSE,
     name VARCHAR(50) NOT NULL,
     residential_college VARCHAR(30) REFERENCES res_colleges(name),
+    notif_pref BOOLEAN NOT NULL DEFAULT FALSE,
     graduating_year INT,
     gender INT, -- see above
     partner_genders INT, -- see above
