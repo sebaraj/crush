@@ -1,3 +1,17 @@
+
+/***************************************************************************
+ * File Name: user-service/main.go
+ * Author: Bryan SebaRaj
+ * Description: Entrypoint for user service pod; initializes server and its dependencies/
+ * connections to PostgreSQL (DMS), S3, and OpenSearch.
+ * Date Created: 01-01-2025
+ *
+ * Copyright (c) 2025 Bryan SebaRaj. All rights reserved.
+ *
+ * License:
+ * This file is part of Crush. See the LICENSE file for details.
+ ***************************************************************************/
+
 package main
 
 import (
@@ -19,11 +33,13 @@ import (
 )
 
 func main() {
-	db := server.connectToDB()
+	// connect to postgresql (RDS)
+	db := server.ConnectToDB()
 
 	// connect to s3
-	s3Region := server.getEnv("S3_REGION", "")
-	s3Bucket := server.getEnv("S3_BUCKET", "")
+	s3Region := server.GetEnv("S3_REGION", "")
+	s3Bucket := server.GetEnv("S3_BUCKET", "")
+
 
 	if s3Region == "" || s3Bucket == "" {
 		log.Fatal("One or more required environment variables for S3 are missing")
@@ -31,7 +47,7 @@ func main() {
 	}
 
 	// connect to opensearch
-	opensearchEndpoint := server.getEnv("OPENSEARCH_ENDPOINT", "")
+	opensearchEndpoint := server.GetEnv("OPENSEARCH_ENDPOINT", "")
 	osClient, err := opensearch.NewClient(opensearch.Config{
 		Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
 		Addresses: []string{opensearchEndpoint},
@@ -43,13 +59,15 @@ func main() {
 	}
 	log.Printf("OpenSearch client created")
 
+	// connect to s3
 	sess := session.Must(session.NewSession(&aws.Config{
 		Region: aws.String(s3Region),
 	}))
 
+	// initialize server
 	app := server.NewServer(db, s3Bucket, s3Region, s3.New(sess), osClient)
 	router := http.NewServeMux()
-	app.initializeRoutes(router)
+	app.InitializeRoutes(router)
 
 	server := &http.Server{
 		Addr:    ":6000",

@@ -1,3 +1,15 @@
+/***************************************************************************
+ * File Name: user-service/server/search.go
+ * Author: Bryan SebaRaj
+ * Description: Handler for searching users using Opensearch
+ * Date Created: 01-01-2025
+ *
+ * Copyright (c) 2025 Bryan SebaRaj. All rights reserved.
+ *
+ * License:
+ * This file is part of Crush. See the LICENSE file for details.
+ ***************************************************************************/
+
 package server
 
 import (
@@ -9,7 +21,7 @@ import (
 	"net/http"
 )
 
-func (s *Server) handleSearch(w http.ResponseWriter, r *http.Request) {
+func (s *Server) HandleSearch(w http.ResponseWriter, r *http.Request) {
 	printRequestDetails(r)
 	_, err := s.validateOAuthToken(r)
 	if err != nil {

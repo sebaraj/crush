@@ -1,7 +1,7 @@
 /***************************************************************************
- * File Name: user-service/server/logging.go
+ * File Name: auth-service/server/logging.go
  * Author: Bryan SebaRaj
- * Description: Helper functions to log HTTP request details for debugging
+ * Description: Helper function for logging HTTP request details.
  * Date Created: 01-01-2025
  *
  * Copyright (c) 2025 Bryan SebaRaj. All rights reserved.

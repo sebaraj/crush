@@ -1,4 +1,4 @@
-module main
+module github.com/sebaraj/crush/auth-service
 
 go 1.23.3
 

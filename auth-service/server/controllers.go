@@ -1,4 +1,16 @@
-package main
+/***************************************************************************
+ * File Name: auth-service/server/controllers.go
+ * Author: Bryan SebaRaj
+ * Description: Server struct and primary auth controller/handler
+ * Date Created: 01-01-2025
+ *
+ * Copyright (c) 2025 Bryan SebaRaj. All rights reserved.
+ *
+ * License:
+ * This file is part of Crush. See the LICENSE file for details.
+ ***************************************************************************/
+
+package server
 
 import (
 	"context"
@@ -51,7 +63,7 @@ func validateToken(token string) (string, string, error) {
 	return email, name, nil
 }
 
-func (s *Server) handleAuth(w http.ResponseWriter, r *http.Request) {
+func (s *Server) HandleAuth(w http.ResponseWriter, r *http.Request) {
 	printRequestDetails(r)
 	// get token
 	body, err := io.ReadAll(r.Body)

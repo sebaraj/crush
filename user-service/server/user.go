@@ -1,3 +1,15 @@
+/***************************************************************************
+ * File Name: user-service/server/user.go
+ * Author: Bryan SebaRaj
+ * Description: Handler for getting and updating user info; defines User struct
+ * Date Created: 01-01-2025
+ *
+ * Copyright (c) 2025 Bryan SebaRaj. All rights reserved.
+ *
+ * License:
+ * This file is part of Crush. See the LICENSE file for details.
+ ***************************************************************************/
+
 package server
 
 import (
@@ -10,11 +22,12 @@ import (
 	// "github.com/lib/pq"
 )
 
-type user struct {
+type User struct {
 	Email              string   `json:"email"`
 	IsActive           bool     `json:"is_active"`
 	Name               string   `json:"name"`
 	ResidentialCollege string   `json:"residential_college"`
+	NotifPref          bool     `json:"notif_pref"`
 	GraduatingYear     int      `json:"graduating_year"`
 	Gender             int      `json:"gender"`
 	PartnerGenders     int      `json:"partner_genders"`
@@ -26,9 +39,12 @@ type user struct {
 	Answers            []int    `json:"answers"`
 }
 
-const numInterests = 5
+const (
+	NumInterests = 5
+	NumQuestions = 12
+)
 
-func (s *Server) handleUser(w http.ResponseWriter, r *http.Request) {
+func (s *Server) HandleUser(w http.ResponseWriter, r *http.Request) {
 	printRequestDetails(r)
 	email := r.URL.Path[len("/v1/user/info/"):]
 	if email == "" {
@@ -69,7 +85,7 @@ func (s *Server) handleGetUser(w http.ResponseWriter, r *http.Request, email str
 		}
 	}()
 
-	var result user
+	var result User
 	var name sql.NullString
 	var residentialCollege sql.NullString
 	var graduatingYear sql.NullInt64
@@ -79,8 +95,8 @@ func (s *Server) handleGetUser(w http.ResponseWriter, r *http.Request, email str
 	var snapchat sql.NullString
 	var phoneNumber sql.NullString
 	var pictureS3URL sql.NullString
-	var interests [numInterests]sql.NullString
-	var answers [numQuestions]sql.NullInt64
+	var interests [NumInterests]sql.NullString
+	var answers [NumQuestions]sql.NullInt64
 
 	query := `
 		SELECT 
@@ -88,6 +104,7 @@ func (s *Server) handleGetUser(w http.ResponseWriter, r *http.Request, email str
 			u.is_active, 
 			u.name, 
 			u.residential_college, 
+      u.notif_pref,
 			u.graduating_year, 
 			u.gender, 
 			u.partner_genders, 
@@ -123,6 +140,7 @@ func (s *Server) handleGetUser(w http.ResponseWriter, r *http.Request, email str
 		&result.IsActive,
 		&name,
 		&residentialCollege,
+		&result.NotifPref,
 		&graduatingYear,
 		&gender,
 		&partnerGenders,
@@ -231,7 +249,7 @@ func (s *Server) handleUpdateUser(w http.ResponseWriter, r *http.Request, email 
 		switch field {
 		case "name", "residential_college", "graduating_year", "gender",
 			"partner_genders", "instagram", "snapchat", "phone_number",
-			"interest_1", "interest_2", "interest_3", "interest_4", "interest_5":
+			"interest_1", "interest_2", "interest_3", "interest_4", "interest_5", "notif_pref":
 			updateFields = append(updateFields, field+" = $"+fmt.Sprint(i))
 			updateValues = append(updateValues, value)
 			i++

@@ -1,5 +1,5 @@
 ---
-name: Build and Push Auth Service Docker Image to AWS ECR
+name: Test, Build, and Push Service Containers to AWS ECR
 on:
   push:
     branches: [main, auth, user]
@@ -11,6 +11,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Run Unit Tests for Auth Service
+        run: |
+          cd ./auth-service
+          go test ./test/... -v
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -30,16 +35,21 @@ jobs:
           ECR_REPOSITORY: yalecrush/auth
           IMAGE_TAG: latest
         run: |
-          docker buildx build ./auth_service --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker buildx build ./auth-service --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   build-and-push-user:
-    name: Build and Push User Service to AWS ECR
+    name: Test, Build, and Push User Service to AWS ECR
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/user' || github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Run Unit Tests for User Service
+        run: |
+          cd ./user-service
+          go test ./test/... -v
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -59,5 +69,5 @@ jobs:
           ECR_REPOSITORY: yalecrush/user
           IMAGE_TAG: latest
         run: |
-          docker buildx build ./user_service --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker buildx build ./user-service --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

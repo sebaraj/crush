@@ -1,4 +1,16 @@
-package main
+/***************************************************************************
+ * File Name: auth-service/server/database.go
+ * Author: Bryan SebaRaj
+ * Description: Creates psql connection
+ * Date Created: 01-01-2025
+ *
+ * Copyright (c) 2025 Bryan SebaRaj. All rights reserved.
+ *
+ * License:
+ * This file is part of Crush. See the LICENSE file for details.
+ ***************************************************************************/
+
+package server
 
 import (
 	"database/sql"
@@ -11,19 +23,19 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func getEnv(key, defaultVal string) string {
+func GetEnv(key, defaultVal string) string {
 	if value, exists := os.LookupEnv(key); exists {
 		return value
 	}
 	return defaultVal
 }
 
-func connectToDB() *sql.DB {
-	dbUser := getEnv("DB_USERNAME", "localtest")
-	dbPassword := getEnv("DB_PASSWORD", "localtest")
-	dbEndpoint := getEnv("DB_ENDPOINT", "localhost")
-	dbPort := getEnv("DB_PORT", "5432")
-	dbName := getEnv("DB_NAME", "my_database")
+func ConnectToDB() *sql.DB {
+	dbUser := GetEnv("DB_USERNAME", "localtest")
+	dbPassword := GetEnv("DB_PASSWORD", "localtest")
+	dbEndpoint := GetEnv("DB_ENDPOINT", "localhost")
+	dbPort := GetEnv("DB_PORT", "5432")
+	dbName := GetEnv("DB_NAME", "my_database")
 	fmt.Println("DB_USER:", dbUser)
 	fmt.Println("DB_PASSWORD:", dbPassword)
 

@@ -1,23 +1,26 @@
+/***************************************************************************
+ * File Name: user-service/server/answers.go
+ * Author: Bryan SebaRaj
+ * Description: Handler for updating user answers
+ * Date Created: 01-01-2025
+ *
+ * Copyright (c) 2025 Bryan SebaRaj. All rights reserved.
+ *
+ * License:
+ * This file is part of Crush. See the LICENSE file for details.
+ ***************************************************************************/
+
 package server
 
 import (
 	"encoding/json"
-	// "io"
-	// "database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"strconv"
-	// "github.com/lib/pq"
 )
 
-const numQuestions = 12
-
-type answers struct {
-	Answers []int `json:"answers"`
-}
-
-func (s *Server) handleAnswers(w http.ResponseWriter, r *http.Request) {
+func (s *Server) HandleAnswers(w http.ResponseWriter, r *http.Request) {
 	printRequestDetails(r)
 	email := r.URL.Path[len("/v1/user/answers/"):]
 	if email == "" {

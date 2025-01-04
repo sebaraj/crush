@@ -1,3 +1,15 @@
+/***************************************************************************
+ * File Name: user-service/server/middleware.go
+ * Author: Bryan SebaRaj
+ * Description: Server middleware to handle CORS and OAuth token validation
+ * Date Created: 01-01-2025
+ *
+ * Copyright (c) 2025 Bryan SebaRaj. All rights reserved.
+ *
+ * License:
+ * This file is part of Crush. See the LICENSE file for details.
+ ***************************************************************************/
+
 package server
 
 import (
