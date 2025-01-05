@@ -93,5 +93,6 @@ providing the Yale student body with a robust and scalable solution. -->
 ##### Planned Features:
 
 - [ ] User notification on match via email/text using SNS
+- [ ] Extend to graduate students at Yale
 
 ### Motivation

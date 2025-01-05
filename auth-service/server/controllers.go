@@ -119,7 +119,7 @@ func (s *Server) HandleAuth(w http.ResponseWriter, r *http.Request) {
 	// if exists and isCreated==true, return true
 	w.WriteHeader(http.StatusOK)
 	if isActive {
-		_, err = w.Write([]byte(`{"active":true}`))
+		_, err = w.Write([]byte(`{"active":true, "email":"` + email + `"}`))
 	} else {
 		_, err = w.Write([]byte(`{"active":false}`))
 	}

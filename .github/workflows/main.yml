@@ -5,7 +5,7 @@ on:
     branches: [main, auth, user]
 jobs:
   build-and-push-auth:
-    name: Build and Push Auth Service to AWS ECR
+    name: Test, Build, and Push Auth Service to AWS ECR
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/auth' || github.ref == 'refs/heads/main'
     steps:
