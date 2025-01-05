@@ -52,6 +52,7 @@ func (s *Server) corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		w.Header().Set("Access-Control-Allow-Origin", "*") // change to yalecrush.com for prod
 		w.Header().Set("Access-Control-Allow-Methods", "GET, PUT, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Cross-Origin-Opener-Policy", "unsafe-none")
 
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusNoContent)

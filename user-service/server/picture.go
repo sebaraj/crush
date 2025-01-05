@@ -48,12 +48,12 @@ func (s *Server) handleS3URLRequest(w http.ResponseWriter, r *http.Request, user
 	objectKey := "user-images/" + userEmail + ".jpg"
 	expires := 5 * time.Minute
 
-	req, output := s.S3Client.GetObjectRequest(&s3.GetObjectInput{
+	req, _ := s.S3Client.PutObjectRequest(&s3.PutObjectInput{
 		Bucket: aws.String(s.S3Bucket),
 		Key:    aws.String(objectKey),
 	})
 	log.Printf("req: %v", req)
-	log.Printf("output: %v", output)
+	// log.Printf("output: %v", output)
 	url, err := req.Presign(expires)
 	if err != nil {
 		log.Printf("Failed to sign request: %v", err)
@@ -62,7 +62,9 @@ func (s *Server) handleS3URLRequest(w http.ResponseWriter, r *http.Request, user
 	}
 
 	// update user's picture S3 URL in database
-	_, err = s.DB.Exec("UPDATE users SET picture_s3_url = $1 WHERE email = $2", url, userEmail)
+	s3PublicURL := "https://" + s.S3Bucket + ".s3.amazonaws.com/" + objectKey
+	_, err = s.DB.Exec("UPDATE users SET picture_s3_url = $1 WHERE email = $2", s3PublicURL, userEmail)
+	log.Printf("S3 URL: %s", s3PublicURL)
 	if err != nil {
 		log.Printf("Failed to update user's picture S3 URL: %v", err)
 		http.Error(w, "Failed to update user's picture S3 URL", http.StatusInternalServerError)

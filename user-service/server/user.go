@@ -283,10 +283,5 @@ func (s *Server) handleUpdateUser(w http.ResponseWriter, r *http.Request, email 
 	}
 
 	w.WriteHeader(http.StatusOK)
-	_, err = w.Write([]byte("User updated successfully"))
-	if err != nil {
-		http.Error(w, "Failed to write response", http.StatusInternalServerError)
-		return
-	}
 	log.Printf("User updated successfully: %s", email)
 }
