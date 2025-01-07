@@ -1,8 +1,8 @@
 /***************************************************************************
- * File Name: user-service/server/database.go
+ * File Name: match-service/server/database.go
  * Author: Bryan SebaRaj
- * Description: Helper functions to connect to the database
- * Date Created: 01-01-2025
+ * Description: Helper functions to connect to PSQL DB
+ * Date Created: 01-07-2025
  *
  * Copyright (c) 2025 Bryan SebaRaj. All rights reserved.
  *
