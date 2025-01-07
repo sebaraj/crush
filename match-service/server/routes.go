@@ -34,6 +34,6 @@ func NewServer(db *sql.DB, sqs_url string, sqs_client *sqs.Client) *Server {
 }
 
 func (s *Server) InitializeRoutes(router *http.ServeMux) {
-	router.HandleFunc("GET /v1/match/", s.corsMiddleware(s.HandleGetMatch)) // gets all matches belonging to user
-	// router.HandleFunc("PUT /v1/match/", s.corsMiddleware(s.HandleUpdateMatch)) // updates match status
+	router.HandleFunc("GET /v1/match/", s.corsMiddleware(s.HandleGetMatch))    // gets all matches belonging to user
+	router.HandleFunc("PUT /v1/match/", s.corsMiddleware(s.HandleUpdateMatch)) // updates match status
 }

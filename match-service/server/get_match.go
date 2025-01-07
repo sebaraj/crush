@@ -1,5 +1,5 @@
 /***************************************************************************
- * File Name: match-service/server/user.go
+ * File Name: match-service/server/get-match.go
  * Author: Bryan SebaRaj
  * Description: Handler for getting match info; defines match struct
  * Date Created: 01-07-2025
@@ -82,6 +82,10 @@ func (s *Server) HandleGetMatch(w http.ResponseWriter, r *http.Request) {
 			log.Printf("Failed to scan database results: %v", scanErr)
 			err = scanErr
 			return
+		}
+		if result.SourceEmail != email {
+			result.SourceEmail, result.TargetEmail = result.TargetEmail, result.SourceEmail
+			result.SourceInterested, result.TargetInterested = result.TargetInterested, result.SourceInterested
 		}
 		results = append(results, result)
 	}
