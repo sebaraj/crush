@@ -377,6 +377,10 @@ resource "kubernetes_deployment" "match_deployment" {
             container_port = 5678
           }
           env {
+            name  = "MATCH_QUEUE_URL"
+            value = aws_sqs_queue.match_queue.url
+          }
+          env {
             name = "OPENSEARCH_ENDPOINT"
             value_from {
               secret_key_ref {

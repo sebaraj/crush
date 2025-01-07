@@ -276,18 +276,8 @@ resource "aws_dms_replication_task" "cdc_task" {
         "rule-action" = "include"
       },
       {
-        "rule-type" = "selection"
-        "rule-id"   = "2"
-        "rule-name" = "include-test-table"
-        "object-locator" = {
-          "schema-name" = "public"
-          "table-name"  = "test"
-        }
-        "rule-action" = "include"
-      },
-      {
         "rule-type"   = "transformation"
-        "rule-id"     = "4"
+        "rule-id"     = "2"
         "rule-name"   = "exclude-created-at"
         "rule-action" = "remove-column"
         "rule-target" = "column"
@@ -299,7 +289,7 @@ resource "aws_dms_replication_task" "cdc_task" {
       },
       {
         "rule-type"   = "transformation"
-        "rule-id"     = "5"
+        "rule-id"     = "3"
         "rule-name"   = "exclude-updated-at"
         "rule-action" = "remove-column"
         "rule-target" = "column"
@@ -311,7 +301,7 @@ resource "aws_dms_replication_task" "cdc_task" {
       },
       {
         "rule-type"   = "transformation"
-        "rule-id"     = "6"
+        "rule-id"     = "4"
         "rule-name"   = "exclude-gender"
         "rule-action" = "remove-column"
         "rule-target" = "column"
@@ -323,7 +313,7 @@ resource "aws_dms_replication_task" "cdc_task" {
       },
       {
         "rule-type"   = "transformation"
-        "rule-id"     = "7"
+        "rule-id"     = "5"
         "rule-name"   = "exclude-partner-genders"
         "rule-action" = "remove-column"
         "rule-target" = "column"
@@ -335,7 +325,7 @@ resource "aws_dms_replication_task" "cdc_task" {
       },
       {
         "rule-type"   = "transformation"
-        "rule-id"     = "8"
+        "rule-id"     = "6"
         "rule-name"   = "exclude-instagram"
         "rule-action" = "remove-column"
         "rule-target" = "column"
@@ -347,7 +337,7 @@ resource "aws_dms_replication_task" "cdc_task" {
       },
       {
         "rule-type"   = "transformation"
-        "rule-id"     = "9"
+        "rule-id"     = "7"
         "rule-name"   = "exclude-snapchat"
         "rule-action" = "remove-column"
         "rule-target" = "column"
@@ -359,7 +349,7 @@ resource "aws_dms_replication_task" "cdc_task" {
       },
       {
         "rule-type"   = "transformation"
-        "rule-id"     = "10"
+        "rule-id"     = "8"
         "rule-name"   = "exclude-phone"
         "rule-action" = "remove-column"
         "rule-target" = "column"
@@ -371,7 +361,7 @@ resource "aws_dms_replication_task" "cdc_task" {
       },
       {
         "rule-type"   = "transformation"
-        "rule-id"     = "11"
+        "rule-id"     = "9"
         "rule-name"   = "exclude-notif"
         "rule-action" = "remove-column"
         "rule-target" = "column"
