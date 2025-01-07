@@ -84,7 +84,7 @@ resource "kubernetes_service" "match_service" {
 
     port {
       port        = 80
-      target_port = 5678
+      target_port = 7000
     }
 
     type = "NodePort"
@@ -374,7 +374,11 @@ resource "kubernetes_deployment" "match_deployment" {
           ]
 
           port {
-            container_port = 5678
+            container_port = 7000
+          }
+          env {
+            name  = "MATCH_QUEUE_URL"
+            value = aws_sqs_queue.match_queue.url
           }
           env {
             name = "OPENSEARCH_ENDPOINT"
