@@ -367,11 +367,9 @@ resource "kubernetes_deployment" "match_deployment" {
           }
         }
         container {
-          name  = "match"
-          image = "hashicorp/http-echo:0.2.3"
-          args = [
-            "-text=Hello from Match Dummy Server!"
-          ]
+          name              = "match"
+          image             = "${data.aws_ecr_repository.match_serv_repo.repository_url}:latest"
+          image_pull_policy = "Always"
 
           port {
             container_port = 7000
