@@ -4,4 +4,6 @@ terraform/terraform*
 terraform/.terraform.tfstate.lock.info
 terraform/db.tfvars
 database/*
+*.DS_Store*
+
 

@@ -4,8 +4,8 @@ A novel matchmaking service for university students.
 
 As the use of traditional dating apps decline due to social stigma and poor user recommendations,
 college students are simultaneously becoming more isolated and less likely to approach potential
-romantic interests in person. Crush aims to bridge this gap by providing a platform for students
-where they can anonymously express interest in another student, while also receiving partner recommendations based
+romantic interests. Crush aims to bridge this gap by providing a platform for students
+to express interest in another student, while also receiving partner recommendations based
 on their lifestyle, interests, and preferences.
 
 Every week, a user is presented with a curated list of potential matches using a top-n stable
@@ -19,9 +19,7 @@ providing the foundation for furthing scaling to graduate students and other uni
 
 ### Architecture:
 
-(Archteicture diagram coming soon)
-
-<!-- ![Architecture]() -->
+![Architecture](./assets/architecture.png)
 
 All infrastructure is managed using Terraform as IaC. See `./terraform`
 
