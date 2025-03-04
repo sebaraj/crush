@@ -1,5 +1,7 @@
 # Crush
 
+Work in progress. Will restart development in mid-April.
+
 A novel matchmaking service for university students.
 
 As the use of traditional dating apps decline due to social stigma and poor user recommendations,
